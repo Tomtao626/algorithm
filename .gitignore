@@ -1,1 +1,6 @@
 .idea
+/interview/*.swp
+/interview/a.out
+/interview/*.c
+/interview/*.cpp
+/interview/.mypy_cache
