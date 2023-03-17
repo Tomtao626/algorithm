@@ -1,7 +1,7 @@
 package com.tom;
 
-
-public class ArrayList {
+@SuppressWarnings("unchecked")
+public class ArrayList<E> {
 	
 	/*
 	 * 元素的数量
@@ -10,7 +10,7 @@ public class ArrayList {
 	/*
 	 * 所有的元素
 	 */
-	private int[] elements;
+	private E[] elements;
 	
 	private static final int DEFAULT_CAPATICY = 10;
 	private static final int ELEMENT_NOT_FOUND = -1;
@@ -20,7 +20,7 @@ public class ArrayList {
 	 */
 	public ArrayList(int capaticy) {
 		capaticy = (capaticy < DEFAULT_CAPATICY) ? DEFAULT_CAPATICY : capaticy;
-		elements = new int[capaticy];
+		elements = (E[]) new Object[capaticy];
 	}
 	
 	public ArrayList() {
@@ -32,6 +32,10 @@ public class ArrayList {
 	 * 清除所有元素
 	 */
 	public void clear() {
+		// 不清空存有内存地址的数组 只需要置person对象为null
+		for (int i = 0; i < size; i++) {
+			elements[i] = null;
+		}
 		size = 0;
 	}
 	
@@ -61,7 +65,7 @@ public class ArrayList {
 	 * @param element
 	 * @return
 	 */
-	public boolean contains(int element) {
+	public boolean contains(E element) {
 		return indexOf(element) != ELEMENT_NOT_FOUND;
 	}
 	
@@ -69,18 +73,19 @@ public class ArrayList {
 	 * 添加元素到尾部
 	 * @param element
 	 */
-	public void add(int element) {
+	public void add(E element) {
 	//		elements[size] = element;
 	//		size++;
 		add(size, element);
 	}
+	
 	
 	/*
 	 * 获取index位置的元素
 	 * @param index
 	 * @return
 	 */
-	public int get(int index) {
+	public E get(int index) {
 		if (index < 0 || index >= size) {
 			throw new IndexOutOfBoundsException("Index:" + index + ", Size:" + size);
 		}
@@ -93,11 +98,11 @@ public class ArrayList {
 	 * @param element
 	 * @return 原来的元素
 	 */
-	public int set(int index, int element) {
+	public E set(int index, E element) {
 		if (index < 0 || index >= size) {
 			throw new IndexOutOfBoundsException("Index:" + index + ", Size:" + size);
 		}
-		int old = elements[index];
+		E old = elements[index];
 		elements[index] = element;
 		return old;
 	}
@@ -107,8 +112,9 @@ public class ArrayList {
 	 * @param index
 	 * @param element
 	 */
-	public void add(int index, int element) {
+	public void add(int index, E element) {
 		rangeCheckForAdd(index);
+		ensureCapacity(size + 1);
 		for (int i = size - 1; i >= index; i--) {
 			elements[i+1] = elements[i];
 		}
@@ -121,9 +127,9 @@ public class ArrayList {
 	 * @param index
 	 * @return
 	 */
-	public int remove(int index) {
+	public E remove(int index) {
 		rangeCheck(index);
-		int old = elements[index];
+		E old = elements[index];
 		for (int i = index + 1; i < size - 1; i++) {
 			elements[i - 1] = elements[i];
 		}
@@ -136,12 +142,36 @@ public class ArrayList {
 	 * @param element
 	 * @return
 	 */
-	public int indexOf(int element) {
-		for (int i = 0; i < size; i++) {
-			if (elements[i] == element) 
-				return i;
+	public int indexOf(E element) {
+		if (element == null) {
+			for (int i = 0; i < size; i++) {
+				if (elements[i] == null) return i; //  因为不能对null调用equals 所以需要判断元素是否为空
+			}
+		} else {
+			for (int i = 0; i < size; i++) {
+				// 因为不能对null调用equals
+			if (elements[i].equals(element)) return i;
+		    }
 		}
 		return ELEMENT_NOT_FOUND;
+	}
+	
+	/*
+	 * 保证要有capacity的容量
+	 * @param capacity
+	 */
+	public void ensureCapacity(int capacity) {
+		int oldCapacity = elements.length;
+		if (oldCapacity >= capacity) return;
+		
+		// 新容量为旧容量的1.5倍
+		int newCapacity = oldCapacity + (oldCapacity >> 1);
+		E[] newElements = (E[]) new Object[newCapacity];
+		for (int i = 0; i < size; i++) {
+			newElements[i] = elements[i];
+		}
+		elements = newElements;
+		System.out.println(oldCapacity + "正在扩容为" + newCapacity);
 	}
 	
 	private void outOfBounds(int index) {
