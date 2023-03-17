@@ -29,6 +29,17 @@ public class Main {
 		return second;
 	}
 	
+	public static int fib4(int n) {
+		if (n<=1) return n;
+		int first = 0;
+		int second = 1;
+		while(n-- > 1) {
+			second += first;
+			first = second - first;
+		}
+		return second;
+	}
+	
     //	斐波那契的线性代数解法 – 特征方程
 	public static int fib3(int n) {
 		// 时间复杂度 O(1)
@@ -44,8 +55,7 @@ public class Main {
 	 */
 	
 	public static void main(String[] args) {
-		int n = 20;
-		// TODO Auto-generated method stub
+		int n = 40;
 		TimeTool.check("fib1", new Task() {
 			public void execute() {
 				System.out.println(fib1(n));
@@ -54,6 +64,16 @@ public class Main {
 		TimeTool.check("fib2", new Task() {
 			public void execute() {
 				System.out.println(fib2(n));
+			}
+		});
+		TimeTool.check("fib3", new Task() {
+			public void execute() {
+				System.out.println(fib3(n));
+			}
+		});
+		TimeTool.check("fib4", new Task() {
+			public void execute() {
+				System.out.println(fib4(n));
 			}
 		});
 	}
