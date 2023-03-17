@@ -3,7 +3,7 @@ package com.tom;
 public class Main {
 
 	public static void main(String[] args) {
-        // java.util.ArrayList<E> 源码
+        java.util.ArrayList listArrayList; // 源码
 		// Object[] objects = new Object[7];
 		// objects[0] = new Person(10, "Jack"); // 对象数组里面存放的是对象的地址
 		// 为什么存放地址 而不存放对象的实际数据
