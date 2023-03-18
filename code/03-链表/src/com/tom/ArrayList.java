@@ -1,19 +1,14 @@
 package com.tom;
 
+
 @SuppressWarnings("unchecked")
-public class ArrayList<E> {
-	
-	/*
-	 * 元素的数量
-	 */
-	private int size;
+public class ArrayList<E> extends AbstractList<E> {
+
 	/*
 	 * 所有的元素
 	 */
 	private E[] elements;
-	
 	private static final int DEFAULT_CAPATICY = 10;
-	private static final int ELEMENT_NOT_FOUND = -1;
 	
 	/*
 	 * 构造函数
@@ -38,47 +33,6 @@ public class ArrayList<E> {
 		}
 		size = 0;
 	}
-	
-	/*
-	 * 元素的数量
-	 * @return
-	 */
-	public int size() {
-		return size;
-	}
-	
-	/*
-	 * 是否为空
-	 * @return
-	 */
-	public boolean isEmpty() {
-		return size == 0;
-		/*
-		 * if (size == 0) {
-			return true;
-		}
-		*/
-	}
-	
-	/*
-	 * 是否包含某个元素
-	 * @param element
-	 * @return
-	 */
-	public boolean contains(E element) {
-		return indexOf(element) != ELEMENT_NOT_FOUND;
-	}
-	
-	/*
-	 * 添加元素到尾部
-	 * @param element
-	 */
-	public void add(E element) {
-	//		elements[size] = element;
-	//		size++;
-		add(size, element);
-	}
-	
 	
 	/*
 	 * 获取index位置的元素
@@ -181,21 +135,7 @@ public class ArrayList<E> {
 		System.out.println(oldCapacity + "正在扩容为" + newCapacity);
 	}
 	
-	private void outOfBounds(int index) {
-		throw new IndexOutOfBoundsException("Index:" + index + ", Size:" + size);
-	}
 	
-	private void rangeCheck(int index) {
-		if (index < 0 || index >= size) {
-			outOfBounds(index);
-		}
-	}
-	
-	private void rangeCheckForAdd(int index) {
-		if (index < 0 || index > size) {
-			outOfBounds(index);
-		}
-	}
 	
 	@Override
 	public String toString() {
@@ -214,4 +154,5 @@ public class ArrayList<E> {
 		return string.toString();
 		
 	}
+
 }
