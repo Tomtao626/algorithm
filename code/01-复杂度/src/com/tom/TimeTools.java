@@ -2,14 +2,14 @@ package com.tom;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-public class TimeTool {
+public class TimeTools {
 	private static final SimpleDateFormat fmt = new SimpleDateFormat("HH:mm:ss.SSS");
 	
 	public interface Task {
 		void execute();
 	}
 	
-	public static void check(String title, Task task) {
+	public static void test(String title, Task task) {
 		if (task == null) return;
 		title = (title == null) ? "" : ("[" + title + "]");
 		System.out.println(title);

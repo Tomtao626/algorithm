@@ -39,6 +39,9 @@ public class ArrayList2<E> extends AbstractList<E> {
 			elements[i] = null;
 		}
 		size = 0;
+		if (elements != null && elements.length > DEFAULT_CAPATICY) {
+			elements = (E[]) new Object[DEFAULT_CAPATICY]; // 回到最初的状态
+		}
 	}
 	
 	/*

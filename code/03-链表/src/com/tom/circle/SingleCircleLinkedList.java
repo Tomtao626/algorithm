@@ -1,15 +1,15 @@
-package com.tom;
+package com.tom.circle;
 
-public class LinkedList<E> extends AbstractList<E> {
+import com.tom.AbstractList;
+
+public class SingleCircleLinkedList<E> extends AbstractList<E> {
 	private Node<E> first;
-	private Node<E> last;
 	
 	private static class Node<E> {
 		E element;
-		Node<E> prev;
 		Node<E> next;
-		public Node(Node<E> prev, E element, Node<E> next) {
-			this.prev = prev;
+		public Node(E element, Node<E> next) {
+			super();
 			this.element = element;
 			this.next = next;
 		}
@@ -18,17 +18,7 @@ public class LinkedList<E> extends AbstractList<E> {
 		public String toString() {
 			// TODO Auto-generated method stub
 			StringBuilder sBuilder = new StringBuilder();
-			if (prev != null) {
-				sBuilder.append(prev.element);
-			} else {
-				sBuilder.append("null");
-			}
-			sBuilder.append("_").append(element).append("_");
-			if (next != null) {
-				sBuilder.append(next.element);
-			} else {
-				sBuilder.append("null");
-			}
+			sBuilder.append(element).append("_").append(next.element);
 			return sBuilder.toString();
 		}
 	}
@@ -38,7 +28,6 @@ public class LinkedList<E> extends AbstractList<E> {
 		// TODO Auto-generated method stub
 		size = 0;
 		first = null;
-		last = null;
 	}
 
 	@Override
@@ -55,57 +44,56 @@ public class LinkedList<E> extends AbstractList<E> {
 		E old = node.element;
 		node.element = element;
 		return old;
+		// 最好情况复杂度 O(1) 开头
+		// 最坏情况复杂度 O(N) 末尾
+		// 平均复杂度    O(N)
 	}
 
 	@Override
 	public void add(int index, E element) {
 		rangeCheckForAdd(index);
-		// 链表没有元素的情况
-		// index = size = 0
-		if (index == size) {
-			Node<E> oldLast = last;
-			last = new Node<>(oldLast, element, null); // 指向之前最后一个元素的last
-			
-			if (oldLast == null) {
-				// 链表添加的第一个元素
-				first = last;
-			} else {
-				oldLast.next = last;
-			}
+		// 如果是第0个节点  需要将first指向第一个节点 然后将第一个节点的next指向原本的第零号节点
+		if (index == 0) {
+			Node<E> newFirst = new Node<>(element, first);
+			// 拿到最后一个结点 // 单向循环链表
+			Node<E> last = (size == 0) ? newFirst : node(size - 1);
+			last.next = newFirst;
+			first = newFirst;
 		} else {
-			Node<E> next = node(index);
-			Node<E> prev = next.prev;
-			Node<E> node = new Node<>(prev, element, next);
-			next.prev = node;
-			
-			
-			if (prev == null) { // index = 0 开头
-				first = node;
-			} else {
-				prev.next = node;
-			}
+			// 先找到前置节点 再通过前置节点找到下一个节点
+			Node<E> prev = node(index - 1);
+			prev.next = new Node<>(element, prev.next);
 		}
 		size++;
+		// 在编写链表过程中,要注意边界测试,比如index为0,size-1,size时的情况
+		// 最好情况复杂度 O(1) 开头
+		// 最坏情况复杂度 O(N) 末尾
+		// 平均复杂度    O(N)
 	}
 
 	@Override
 	public E remove(int index) {
 		rangeCheck(index);
-		Node<E> node = node(index);
-		Node<E> prev = node.prev;
-		Node<E> next = node.next;
-		if (prev == null) { // index = 0 从开头删除 删除第一个
-			first = next; // 第零个结点的下一个 == node.next
+		Node<E> node = first;
+		if (index == 0) {
+			if (size == 1) {
+				first = null;
+			} else {
+				Node<E> last = node(size - 1);
+				first = first.next;
+				last.next = first;
+			}
+			
 		} else {
-			prev.next = next;
-		}
-		if (next == null) { // index = size - 1 从末尾删除 删除最后一个
-			last = prev; // 最后一个结点的上一个 == node.prev
-		} else {
-			next.prev = prev;
+			Node<E> prev = node(index - 1);
+			node = prev.next;
+			prev.next = node.next;
 		}
 		size--;
 		return node.element;
+		// 最好情况复杂度 O(1) 开头
+		// 最坏情况复杂度 O(N) 末尾
+		// 平均复杂度    O(N)
 	}
 
 	@Override
@@ -134,20 +122,11 @@ public class LinkedList<E> extends AbstractList<E> {
 	 */
 	private Node<E> node(int index) {
 		rangeCheck(index);
-		if (index < (size >> 1)) {
-			Node<E> node = first;
-			for (int i = 0; i < index; i++) {
-				node = node.next;
-			}
-			return node;
-		} else {
-			Node<E> node = last;
-			for (int i = size - 1; i > index; i--) {
-				node = node.prev;
-			}
-			return node;
+		Node<E> node = first;
+		for (int i = 0; i < index; i++) {
+			node = node.next;
 		}
-		
+		return node;
 	}
 	
 	@Override

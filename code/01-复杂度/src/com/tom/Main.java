@@ -1,6 +1,6 @@
 package com.tom;
 
-import com.tom.TimeTool.Task;
+import com.tom.TimeTools.Task;
 
 public class Main {
 	
@@ -56,22 +56,22 @@ public class Main {
 	
 	public static void main(String[] args) {
 		int n = 40;
-		TimeTool.check("fib1", new Task() {
+		TimeTools.test("fib1", new Task() {
 			public void execute() {
 				System.out.println(fib1(n));
 			}
 		});
-		TimeTool.check("fib2", new Task() {
+		TimeTools.test("fib2", new Task() {
 			public void execute() {
 				System.out.println(fib2(n));
 			}
 		});
-		TimeTool.check("fib3", new Task() {
+		TimeTools.test("fib3", new Task() {
 			public void execute() {
 				System.out.println(fib3(n));
 			}
 		});
-		TimeTool.check("fib4", new Task() {
+		TimeTools.test("fib4", new Task() {
 			public void execute() {
 				System.out.println(fib4(n));
 			}

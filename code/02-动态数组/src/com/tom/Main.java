@@ -43,7 +43,7 @@ public class Main {
 //			list.add(i);
 //		}
 //		System.out.println(list.toString());
-//		Assert.test(list.get(3) == 80);
-//		Assert.test(list.size() == 6);
+//		Asserts.test(list.get(3) == 80);
+//		Asserts.test(list.size() == 6);
 	}
 }
