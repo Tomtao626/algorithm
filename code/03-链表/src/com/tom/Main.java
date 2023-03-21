@@ -2,7 +2,7 @@ package com.tom;
 
 import org.w3c.dom.ls.LSInput;
 
-import com.tom.circle.SingleCircleLinkedList;
+import com.tom.circle.CircleLinkedList;
 
 public class Main {
 
@@ -17,7 +17,7 @@ public class Main {
 		/*List<Integer> list = new ArrayList2<>();
 		for (int i = 0; i < 50; i++) {
 			list.add(i);
-		}
+		}2222
 		for (int i=0;i<50;i++) {
 			list.remove(0);
 		}
@@ -26,7 +26,8 @@ public class Main {
 		
 //		testList(new ArrayList<>());
 //		testList(new LinkedList<>());
-		testList(new SingleCircleLinkedList<>());
+//		testList(new CircleLinkedList<>());
+		josephus();
 	}
 	
 	static void testList(List<Integer> list) {
@@ -51,6 +52,22 @@ public class Main {
 		Asserts.test(list.get(list.size() - 1) == 44);
 		
 		System.out.println(list);
+	}
+	
+	static void josephus() {
+		CircleLinkedList<Integer> list = new CircleLinkedList<>();
+		for (int i = 1; i <= 8; i++) {
+			list.add(i);
+		}
+		// 指向头节点
+		list.reset();
+		
+		// 直到链表为空
+		while (!list.isEmpty()) {
+			list.next();
+			list.next();
+			System.out.println(list.remove());
+		}
 	}
 
 }
