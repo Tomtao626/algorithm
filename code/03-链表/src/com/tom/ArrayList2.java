@@ -2,7 +2,14 @@ package com.tom;
 
 
 @SuppressWarnings("unchecked")
-public class ArrayList<E> extends AbstractList<E> {
+
+/**
+ * 动态缩容操作
+ * @author tao626
+ *
+ * @param <E>
+ */
+public class ArrayList2<E> extends AbstractList<E> {
 
 	/*
 	 * 所有的元素
@@ -13,12 +20,12 @@ public class ArrayList<E> extends AbstractList<E> {
 	/*
 	 * 构造函数
 	 */
-	public ArrayList(int capaticy) {
+	public ArrayList2(int capaticy) {
 		capaticy = (capaticy < DEFAULT_CAPATICY) ? DEFAULT_CAPATICY : capaticy;
 		elements = (E[]) new Object[capaticy];
 	}
 	
-	public ArrayList() {
+	public ArrayList2() {
 		this(DEFAULT_CAPATICY);
 	}
 
@@ -81,12 +88,15 @@ public class ArrayList<E> extends AbstractList<E> {
 	 * @return
 	 */
 	public E remove(int index) {
+		// 动态缩容
 		rangeCheck(index);
 		E old = elements[index];
 		for (int i = index + 1; i < size; i++) {
 			elements[i - 1] = elements[i];
 		}
 		size--;
+		
+		trim();
 		return old;
 		// 最好情况复杂度 O(1) 从末尾删除
 		// 最坏情况复杂度 O(N) 从开头删除
@@ -137,7 +147,20 @@ public class ArrayList<E> extends AbstractList<E> {
 		System.out.println(oldCapacity + "正在扩容为" + newCapacity);
 	}
 	
-	
+	/**
+	 * 缩容
+	 */
+	private void trim() {
+		int oldCapacity = elements.length;
+		int newCapacity = oldCapacity >> 1;
+		if (size >= (oldCapacity >> 1) || oldCapacity <= DEFAULT_CAPATICY) return;
+		E[] newElements = (E[]) new Object[newCapacity];
+		for (int i=0;i<size;i++) {
+			newElements[i] = elements[i];
+		}
+		elements = newElements;
+		System.out.println(oldCapacity + "正在缩容为" + newCapacity);
+	}
 	
 	@Override
 	public String toString() {

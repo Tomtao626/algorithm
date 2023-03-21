@@ -43,7 +43,11 @@ public abstract class AbstractList<E> implements List<E> {
 	public void add(E element) {
 	//		elements[size] = element;
 	//		size++;
-		add(size, element);
+		add(size, element); 
+		// 最好情况:向数组末尾添加 O(1)
+		// 最坏情况: 扩容 O(N) 0-size
+		// 平均: O(1)
+		// 均摊: O(1) 经过连续的多次复杂度比较低的情况后, 出现个别复杂度过高的情况
 	}
 	
 	protected void outOfBounds(int index) {

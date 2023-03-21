@@ -1,7 +1,17 @@
 package com.tom;
 
-public class LinkedList<E> extends AbstractList<E> {
+/**
+ * 增加一个虚拟头结点
+ * @author tao626
+ *
+ * @param <E>
+ */
+public class LinkedList2<E> extends AbstractList<E> {
 	private Node<E> first;
+	
+	public LinkedList2() {
+		first = new Node<E>(null,null);
+	}
 	
 	private static class Node<E> {
 		E element;
@@ -23,9 +33,6 @@ public class LinkedList<E> extends AbstractList<E> {
 	@Override
 	public E get(int index) {
 		return node(index).element;
-		// 最好情况复杂度 O(1) 开头
-		// 最坏情况复杂度 O(N) 末尾
-		// 平均复杂度    O(N)
 	}
 
 	@Override
@@ -34,45 +41,26 @@ public class LinkedList<E> extends AbstractList<E> {
 		E old = node.element;
 		node.element = element;
 		return old;
-		// 最好情况复杂度 O(1) 开头
-		// 最坏情况复杂度 O(N) 末尾
-		// 平均复杂度    O(N)
 	}
 
 	@Override
 	public void add(int index, E element) {
 		rangeCheckForAdd(index);
-		// 如果是第0个节点  需要将first指向第一个节点 然后将第一个节点的next指向原本的第零号节点
-		if (index == 0) {
-			first = new Node<>(element, first);
-		} else {
-			// 先找到前置节点 再通过前置节点找到下一个节点
-			Node<E> prev = node(index - 1);
-			prev.next = new Node<>(element, prev.next);
-		}
+		// 先找到前置节点 再通过前置节点找到下一个节点
+		Node<E> prev = index == 0 ? first : node(index - 1);
+		prev.next = new Node<>(element, prev.next);
 		size++;
 		// 在编写链表过程中,要注意边界测试,比如index为0,size-1,size时的情况
-		// 最好情况复杂度 O(1) 开头
-		// 最坏情况复杂度 O(N) 末尾
-		// 平均复杂度    O(N)
 	}
 
 	@Override
 	public E remove(int index) {
 		rangeCheck(index);
-		Node<E> node = first;
-		if (index == 0) {
-			first = first.next;
-		} else {
-			Node<E> prev = node(index - 1);
-			node = prev.next;
-			prev.next = node.next;
-		}
+		Node<E> prev = index == 0 ? first : node(index - 1);
+		Node<E> node = prev.next;
+		prev.next = node.next;
 		size--;
 		return node.element;
-		// 最好情况复杂度 O(1) 开头
-		// 最坏情况复杂度 O(N) 末尾
-		// 平均复杂度    O(N)
 	}
 
 	@Override
@@ -101,7 +89,7 @@ public class LinkedList<E> extends AbstractList<E> {
 	 */
 	private Node<E> node(int index) {
 		rangeCheck(index);
-		Node<E> node = first;
+		Node<E> node = first.next;
 		for (int i = 0; i < index; i++) {
 			node = node.next;
 		}
@@ -112,7 +100,7 @@ public class LinkedList<E> extends AbstractList<E> {
 	public String toString() {
 		StringBuilder string = new StringBuilder();
 		string.append("size=").append(size).append(", [");
-		Node<E> node = first;
+		Node<E> node = first.next;
 		for (int i = 0; i < size; i++) {
 			if (i!=0) {
 				string.append(", ");

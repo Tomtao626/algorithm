@@ -7,17 +7,17 @@ package 链表;
  */
 public class _203_移除链表元素 {
 	public ListNode removeElements(ListNode head, int val) {
-        while (head != null && head.val == val) head = head.next;
+        while (head != null && head.val == val) head = head.next; 
         if (head == null) return head;
         ListNode prev = head;
-        ListNode last = head.next;
-        while (last != null) {
-        	if (last.val == val) {
-        		prev.next = last.next;
-        	} else {
-        		prev = last;
-        	}
-        	last = last.next;
+        ListNode node = head.next;
+        while (node != null) {
+            if (node.val == val) {
+                prev.next = node.next;
+            } else {
+                prev = node;
+            }
+            node = node.next;
         }
         return head;
     }
