@@ -1,10 +1,11 @@
 package com.tom;
-
+import com.tom.printer.BinaryTreeInfo;
 import java.util.Comparator;
 
-public class BinarySearchTree<E>{
+@SuppressWarnings("unchecked")
+public class BinarySearchTree<E> implements BinaryTreeInfo {
 	private int size;
-	private Node<E> rootNode;
+	private Node<E> root;
 	private Comparator<E> comparator;
 	
 	public BinarySearchTree() {
@@ -27,34 +28,39 @@ public class BinarySearchTree<E>{
 	}
 	
 	public void add(E element) {
-		elementNotNullCheck(element);
+elementNotNullCheck(element);
+		
 		// 添加第一个节点
-		if (rootNode == null) {
-			rootNode = new Node<>(element, null);
+		if (root == null) {
+			root = new Node<>(element, null);
 			size++;
 			return;
 		}
+		
 		// 添加的不是第一个节点
 		// 找到父节点
-		Node<E> parentNode = rootNode;
-		Node<E> node = rootNode;
+		Node<E> parent = root;
+		Node<E> node = root;
 		int cmp = 0;
-		while (node != null) {
+		do {
 			cmp = compare(element, node.element);
+			parent = node;
 			if (cmp > 0) {
-				node = node.rightNode;
+				node = node.right;
 			} else if (cmp < 0) {
-				node = node.leftNode;
+				node = node.left;
 			} else { // 相等
+				node.element = element;
 				return;
 			}
-		}
-		// 看看插入到父节点哪个位置
-		Node<E> newNode = new Node<>(element, parentNode);
+		} while (node != null);
+
+		// 看看插入到父节点的哪个位置
+		Node<E> newNode = new Node<>(element, parent);
 		if (cmp > 0) {
-			parentNode.rightNode = newNode;
+			parent.right = newNode;
 		} else {
-			parentNode.leftNode = newNode;
+			parent.left = newNode;
 		}
 		size++;
 	}	
@@ -88,14 +94,39 @@ public class BinarySearchTree<E>{
 	
 	private static class Node<E> {
 		E element;
-		Node<E> leftNode;
-		Node<E> rightNode;
+		Node<E> left;
+		Node<E> right;
 		@SuppressWarnings("unused")
-		Node<E> parentNode;
-		public Node(E element, Node<E> parentNode) {
+		Node<E> parent;
+		public Node(E element, Node<E> parent) {
 			this.element = element;
-			this.parentNode = parentNode;
+			this.parent = parent;
 		}
+	}
+	
+	@Override
+	public Object root() {
+		return root;
+	}
+
+	@Override
+	public Object left(Object node) {
+		return ((Node<E>)node).left;
+	}
+
+	@Override
+	public Object right(Object node) {
+		return ((Node<E>)node).right;
+	}
+
+	@Override
+	public Object string(Object node) {
+		Node<E> myNode = (Node<E>)node;
+		String parentString = "null";
+		if (myNode.parent != null) {
+			parentString = myNode.parent.element.toString();
+		}
+		return myNode.element + "_p(" + parentString + ")";
 	}
 	
 }
