@@ -33,6 +33,7 @@ public class LoginServlet extends HttpServlet {
         System.out.println("username: " + username + ", password: " + password);
         // 2.判断
         resp.setHeader("Content-Type", "text/html;charset=utf-8");
+//        resp.setHeader("Content-Type", "text/plain;charset=utf-8");
         if ("123".equals(username) && "456".equals(password)) {
             // 登录成功
             // 3.给客户端返回数据
