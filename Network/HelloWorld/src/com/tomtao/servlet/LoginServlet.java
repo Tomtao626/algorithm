@@ -36,10 +36,10 @@ public class LoginServlet extends HttpServlet {
         if ("123".equals(username) && "456".equals(password)) {
             // 登录成功
             // 3.给客户端返回数据
-            resp.getWriter().write("login success");
+            resp.getWriter().write("<h1 style=\"color:red\">login success</h1>");
         } else {
             // 登录失败
-            resp.getWriter().write("login failed");
+            resp.getWriter().write("<h1 style=\"color:red\">login failed</h1>");
         }
     }
 }
