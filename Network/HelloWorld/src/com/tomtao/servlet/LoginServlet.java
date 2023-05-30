@@ -37,6 +37,29 @@ public class LoginServlet extends HttpServlet {
         if ("123".equals(username) && "456".equals(password)) {
             // 登录成功
             // 3.给客户端返回数据
+//            resp.getWriter().write("<h1 style=\"color:red\">login success</h1>");
+            // 重定向
+//            resp.sendRedirect("/hello/html/home.html");
+            resp.setStatus(302);
+            resp.setHeader("Location", "/hello/html/home.html");
+        } else {
+            // 登录失败
+            resp.getWriter().write("<h1 style=\"color:red\">login failed</h1>");
+        }
+    }
+
+    protected void test(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        System.out.println("test ----");
+        // 1.获取客户端发送的数据
+        String username = req.getParameter("username");
+        String password = req.getParameter("password");
+        System.out.println("username: " + username + ", password: " + password);
+        // 2.判断
+        resp.setHeader("Content-Type", "text/html;charset=utf-8");
+//        resp.setHeader("Content-Type", "text/plain;charset=utf-8");
+        if ("123".equals(username) && "456".equals(password)) {
+            // 登录成功
+            // 3.给客户端返回数据
             resp.getWriter().write("<h1 style=\"color:red\">login success</h1>");
         } else {
             // 登录失败
