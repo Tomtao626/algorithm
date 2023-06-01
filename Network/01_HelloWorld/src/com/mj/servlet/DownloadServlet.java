@@ -1,4 +1,4 @@
-package com.tomtao.servlet;
+package com.mj.servlet;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
